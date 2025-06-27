@@ -1,0 +1,115 @@
+{
+  "score_table": [
+    {
+      "項目": "property_proof",
+      "值": "月收入10萬",
+      "規則": "3萬以下：1；3~6萬：3；6萬↑：5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_rating",
+      "值": "AA",
+      "規則": "AAA:5；AA:4；A:3；BBB以下:1",
+      "分數": 4
+    },
+    {
+      "項目": "credit_alert.credit_card_overdue_count",
+      "值": 0,
+      "規則": "0:5；1~2:3；3↑:1",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.bad_debt",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.joint_credit_warning",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.over_insurance",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.duplicate_insurance",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.abnormal_insurance",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "claim_records.total_claim_amount",
+      "值": 0,
+      "規則": "5萬以下：5；5~10萬：3；10萬↑：1",
+      "分數": 5
+    },
+    {
+      "項目": "claim_records.disputed",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "criminal_record.has_record",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "criminal_record.blacklist",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "suspicious_transaction.money_laundering",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "suspicious_transaction.terrorist_financing",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    }
+  ],
+  "total_score": 69,
+  "grade": "A+",
+  "優點": [
+    "月收入10萬，財力充足，有助於提升承保額度。",
+    "信用評等為AA，且無信用卡逾期及不良債務，信譽良好。",
+    "過去無理賠紀錄，理賠風險低。",
+    "無犯罪紀錄及洗錢或恐怖融資疑慮，風險控管良好。",
+    "無信用卡逾期",
+    "無壞帳",
+    "無聯合信貸警示",
+    "無過度保險",
+    "無重複投保",
+    "無異常保險",
+    "無理賠爭議",
+    "無黑名單",
+    "無疑似洗錢",
+    "無恐怖融資"
+  ],
+  "風險": [
+    "目前已投保財產保險，需注意是否有重複投保的狀況。"
+  ],
+  "建議": [
+    "建議持續維持良好的信用評級，並避免重複投保，以降低道德風險。",
+    "可考慮增加保險覆蓋範圍，以獲得更全面的財產保障。",
+    "客戶信用評等高，且財力充足，無犯罪及異常保險行為，屬低風險等級。建議一般承保並適度提高保額，以獲得更全面的財產保障。"
+  ],
+  "專家綜合說明": "此客戶月收入10萬，信用評等高，無信用卡逾期及不良債務，財力及信譽均佳。無犯罪紀錄及異常保險行為，核保風險低。總分69分，等級A+。建議一般承保，適度提高保額，並注意避免重複投保以降低道德風險。"
+}

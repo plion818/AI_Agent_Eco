@@ -1,4 +1,3 @@
-# 智慧核保Agent API 回傳內容自動解析 Canvas
 import os
 import json
 import logging
@@ -19,7 +18,7 @@ def call_agent_api(customer_data: dict, rules: dict, timeout: int = 60):
     timeout: 逾時秒數，預設 60 秒
     """
     api_url = os.getenv("API_URL")
-    api_token = os.getenv("API_TOKEN")  # 若你的API不需token，這行可刪
+    api_token = os.getenv("API_TOKEN")  # 若 API 不需 token，可忽略此變數
     if not api_url:
         logger.error("缺少 API_URL，請確認 .env 檔案設定。")
         return None
@@ -49,7 +48,7 @@ def call_agent_api(customer_data: dict, rules: dict, timeout: int = 60):
         logger.error(f"API 呼叫失敗：{e}")
         return None
 
-# Canvas 區塊：自動解析最終回傳小工具
+# 自動解析最終回傳小工具
 
 def extract_final_results(api_response):
     """
@@ -59,6 +58,7 @@ def extract_final_results(api_response):
     Returns:
         dict: {"extracted": {...}, "analysis": {...}} 或 None
     """
+    text = ""
     try:
         # 多層message
         text = (
@@ -67,9 +67,10 @@ def extract_final_results(api_response):
             ["results"]["message"]["text"]
         )
         # 去掉 markdown 或 codeblock
-        text = text.strip()
-        match = re.search(r"```json\s*({.*})\s*```", text, re.DOTALL)
+        # 改用非貪婪模式，支援多層巢狀或多個 code block
+        match = re.search(r"```json\s*([\s\S]*?)\s*```", text)
         json_text = match.group(1) if match else text
+        result = json.loads(json_text)
         result = json.loads(json_text)
         return result
     except Exception as e:
@@ -77,10 +78,26 @@ def extract_final_results(api_response):
         logger.error(f"解析失敗內容原文: {text}")
         return None
 
+
+def save_results(data, customer_id, filename_prefix="result"):
+    """
+    將資料以 .json 格式儲存於 Results 資料夾，檔名格式: {prefix}_{customer_id}.json，若已存在則覆蓋
+    """
+    results_dir = os.path.join(os.path.dirname(__file__), "Results")
+    os.makedirs(results_dir, exist_ok=True)
+    filename = f"{filename_prefix}_{customer_id}.json"
+    filepath = os.path.join(results_dir, filename)
+    try:
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        logger.info(f"結果已儲存於 {filepath}")
+    except Exception as e:
+        logger.error(f"儲存結果失敗: {e}")
+
 if __name__ == "__main__":
-    import sys
 
     # 讀入規則
+    import sys
     import config_rules
     rules = None
     for var in dir(config_rules):
@@ -130,12 +147,13 @@ if __name__ == "__main__":
 
     if not customer_base:
         logger.error(f"找不到 {customer_id} 的基本資料")
-        exit(1)
-
     # 合併欄位（flat結構）
-    customer_data = customer_base.copy()
+    import copy  # 加入 內建 copy 函式庫
+    customer_data = copy.deepcopy(customer_base)
     if customer_hist:
         for k, v in customer_hist.items():
+            if k != "customer_id":
+                customer_data[k] = v
             if k != "customer_id":
                 customer_data[k] = v
 
@@ -163,6 +181,8 @@ if __name__ == "__main__":
         if final_result:
             print("【自動解析最終擷取結果與分析】")
             print(json.dumps(final_result, ensure_ascii=False, indent=2))
+            # 儲存結果
+            save_results(final_result, customer_id)
         else:
             print("❌ 解析 API 回傳內容失敗，請檢查結構或日誌")
     else:

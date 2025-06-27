@@ -1,0 +1,119 @@
+{
+  "score_table": [
+    {
+      "項目": "age",
+      "值": 26,
+      "規則": "50以下：5；50~60：3；60以上：1",
+      "分數": 5
+    },
+    {
+      "項目": "health_status",
+      "值": "良好",
+      "規則": "無重大疾病：5；有慢性病：3；重大疾病：1",
+      "分數": 5
+    },
+    {
+      "項目": "smoking",
+      "值": false,
+      "規則": "不吸菸：5；吸菸：1",
+      "分數": 5
+    },
+    {
+      "項目": "credit_rating",
+      "值": "BBB",
+      "規則": "AAA:5；AA:4；A:3；BBB以下:1",
+      "分數": 1
+    },
+    {
+      "項目": "credit_alert.credit_card_overdue_count",
+      "值": 1,
+      "規則": "0:5；1~2:3；3↑:1",
+      "分數": 3
+    },
+    {
+      "項目": "credit_alert.bad_debt",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.joint_credit_warning",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.over_insurance",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.duplicate_insurance",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "credit_alert.abnormal_insurance",
+      "值": true,
+      "規則": "true:1；false:5",
+      "分數": 1
+    },
+    {
+      "項目": "claim_records.claim_count",
+      "值": 2,
+      "規則": "0:5；1~2:3；3↑:1",
+      "分數": 3
+    },
+    {
+      "項目": "claim_records.disputed",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "criminal_record.has_record",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "criminal_record.blacklist",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "suspicious_transaction.money_laundering",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    },
+    {
+      "項目": "suspicious_transaction.terrorist_financing",
+      "值": false,
+      "規則": "true:1；false:5",
+      "分數": 5
+    }
+  ],
+  "total_score": 65,
+  "grade": "A",
+  "優點": [
+    "健康狀況良好且不吸菸，有助於降低核保風險。",
+    "無犯罪紀錄及洗錢或恐怖融資紀錄，法遵管理良好。",
+    "無犯罪紀錄"
+  ],
+  "風險": [
+    "過往有2次醫療險理賠紀錄，需注意理賠次數及原因。",
+    "信用卡有逾期紀錄，需留意信用警示中的異常保險行為。",
+    "信用評等低",
+    "異常保險行為"
+  ],
+  "建議": [
+    "建議客戶保持良好的信用紀錄以提高信用評等。",
+    "若有能力，提供更多財力證明以提高核保順利度。",
+    "此客戶健康狀況良好且不吸菸，無犯罪及法遵風險，但需注意信用卡使用紀律及異常保險行為。建議保持良好信用紀錄及提供更多財力證明以提高核保成功率。"
+  ],
+  "專家綜合說明": "此客戶健康狀況良好且不吸菸，無犯罪及法遵風險，核保風險相對較低。主要扣分來自於信用評等較低及異常保險行為。總分為65分，等級為A。建議保持良好的信用紀錄及提供更多財力證明，以提高核保成功率。建議一般承保，但需持續追蹤其信用狀況及保險行為。"
+}
