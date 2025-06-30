@@ -273,71 +273,9 @@ h1, h2, h3, h4, h5, h6 { /* General header color from analysis_page.py */
 }
 .score-range-table tr:last-child td { border-bottom: none; }
 
-
-/* Styles for the complex AI rule compliance table (originally '.original-score-table') */
-/* Renaming to '.ai-compliance-table' for clarity and to avoid potential conflicts */
-.ai-compliance-table {
-    border-collapse:collapse;
-    width:100%;
-    min-width:600px; /* From original */
-    margin-bottom: 1.5rem; /* Added for consistency */
-    font-size:16px; /* From original, can be adjusted */
-}
-.ai-compliance-table th, .ai-compliance-table td {
-    border:1px solid #bbb; /* From original */
-    border-bottom:3.5px solid #2c5c88; /* Original thicker bottom border */
-    padding:8px 12px; /* From original */
-    text-align:center;
-}
-.ai-compliance-table th {
-    background:#2c5c88; /* From original */
-    color:#fff;
-}
-.ai-compliance-table .class-cell { /* For category cells with tooltip */
-    cursor: help;
-    position:relative;
-    font-weight:bold; /* Added from original inline style */
-    min-width:90px; /* Added from original inline style */
-}
-.ai-compliance-table .class-tooltip { /* Tooltip for category/class cell */
-    display:none; position:absolute; left:50%;
-    bottom: 100%;
-    transform: translateX(-50%) translateY(-5px);
-    background:#fff; color:#222; border:1.5px solid #2c5c88; border-radius:10px;
-    padding:16px 20px; min-width:280px; max-width:500px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.15); z-index:1000; /* Increased z-index slightly */
-    font-size:15px;
-    text-align:left; white-space:pre-line; word-break:break-all; /* break-word might be better */
-    opacity:0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-.ai-compliance-table .class-cell:hover .class-tooltip {
-    display:block; opacity:1; visibility: visible;
-}
-
-.ai-compliance-table .rule-link { /* For rule name cells with tooltip */
-    color: #222; /* From original */
-    text-decoration: none;
-    cursor: help;
-    position:relative;
-}
-.ai-compliance-table td { background:#fff; } /* Default td background */
-
-.ai-compliance-table .rule-tooltip { /* Tooltip for rule name cell */
-    display:none; position:absolute; left:50%;
-    bottom: 100%;
-    transform: translateX(-50%) translateY(-5px);
-    background:#fff; color:#222; border:1.5px solid #1a5fb4; border-radius:8px;
-    padding:10px 16px; min-width:250px; max-width:400px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.15); z-index:1000; /* Increased z-index slightly */
-    font-size:14px;
-    text-align:left; white-space:pre-line; word-break:break-all; /* break-word might be better */
-    opacity:0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-.ai-compliance-table .rule-link:hover .rule-tooltip {
-    display:block; opacity:1; visibility: visible;
-}
-
 /* Ensure tooltips in Streamlit HTML components are not clipped */
+/* These styles were for .ai-compliance-table, which is no longer styled by this external sheet. */
+/* The original table (.original-score-table) in analysis_page.py now handles its own styles. */
 /* These might need to target more specific Streamlit-generated containers if overflow issues persist */
 div[data-testid="stHtml"] > div, div[data-testid="stHtml"] iframe {
     overflow: visible !important;

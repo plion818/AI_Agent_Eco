@@ -411,46 +411,46 @@ if selected_name and selected_name in customer_dict:
 
             score_table_data = ai_result.get("score_table", [])
             if score_table_data:
-                # --- Start: AI Compliance Table using external CSS ---
-                table_data_compliance = []
-                rule_explain_map_compliance = {item.get("項目", ""): item.get("規則", "") for item in score_table_data}
+                # --- Start: دقیقاً از原始代码 بازسازی شده برای جدول قوانین ---
+                table_data_orig = [] # Renamed to avoid conflict if processed_table_data is used later
+                rule_explain_map_orig = {item.get("項目", ""): item.get("規則", "") for item in score_table_data}
 
                 for item in score_table_data:
                     keyword = item.get("項目", "")
-                    required_compliance = rule_required_map.get(keyword, "○ 選擇") # Assumes rule_required_map is available
-                    table_data_compliance.append({
+                    required_orig = rule_required_map.get(keyword, "○ 選擇")
+                    # 直接使用 get_rule_required_map() 的結果（已是"✶ 必要"或"○ 選擇"）
+                    required_str_orig = required_orig
+                    table_data_orig.append({
                         "分數": item.get("分數", ""),
-                        "規則名稱": keyword,
-                        "規則名稱顯示": all_field_zh.get(keyword, keyword),
-                        "必要性": required_compliance,
-                        "類別": rule_class_map.get(keyword, "未知") # Assumes rule_class_map is available
+                        "規則名稱": keyword, # Keep original keyword for logic
+                        "規則名稱顯示": all_field_zh.get(keyword, keyword), # For display
+                        "必要性": required_str_orig,
+                        "類別": rule_class_map.get(keyword, "未知")
                     })
 
-                grouped_compliance = OrderedDict()
-                for row_compliance in table_data_compliance:
-                    grouped_compliance.setdefault(row_compliance["類別"], []).append(row_compliance)
+                grouped_orig = OrderedDict()
+                for row_orig in table_data_orig:
+                    grouped_orig.setdefault(row_orig["類別"], []).append(row_orig)
 
-                # Class colors can still be defined here for dynamic background if needed,
-                # or managed by CSS if classes are added to rows/cells.
-                # For simplicity, keeping Python-driven background for category cells for now.
-                class_colors_compliance = ["#e6f2ff", "#f9f9d1", "#e8f6e8", "#ffe6e6", "#f3e6ff", "#fff2cc"]
-                class_color_map_compliance = {}
-                for idx, k_compliance in enumerate(grouped_compliance.keys()):
-                    class_color_map_compliance[k_compliance] = class_colors_compliance[idx % len(class_colors_compliance)]
+                class_colors_orig = ["#e6f2ff", "#f9f9d1", "#e8f6e8", "#ffe6e6", "#f3e6ff", "#fff2cc"]
+                class_color_map_orig = {}
+                for idx, k_orig in enumerate(grouped_orig.keys()):
+                    class_color_map_orig[k_orig] = class_colors_orig[idx % len(class_colors_orig)]
 
-                def beautify_rule_desc_html_compliance(desc_str):
+                # Function to beautify rule description, from original logic (slightly modified for clarity)
+                def beautify_rule_desc_html_orig(desc_str):
                     import re
                     items = re.split(r'[；;\n]+', desc_str)
                     items = [i.strip() for i in items if i.strip()]
                     html_list_items = []
-                    for item_text in items:
+                    for item_text in items: # Renamed item to item_text
                         if '：' in item_text:
                             k_part, v_part = item_text.split('：', 1)
                             v_part = v_part.strip()
                             if not v_part.endswith('分'):
                                 v_part = v_part + '分'
                             html_list_items.append(f'<li>📊 <b>{k_part}</b>：<span style="color:#1a5fb4;font-weight:bold">{v_part}</span></li>')
-                        elif ':' in item_text: # Fallback
+                        elif ':' in item_text: # Fallback for colon
                             k_part, v_part = item_text.split(':', 1)
                             v_part = v_part.strip()
                             if not v_part.endswith('分'):
@@ -460,47 +460,78 @@ if selected_name and selected_name in customer_dict:
                             html_list_items.append(f'<li>{item_text}</li>')
                     return '<ul style="margin:0 0 0 1em;padding:0;list-style:none;text-align:left;">' + ''.join(html_list_items) + '</ul>' if html_list_items else desc_str
 
-                # HTML for the table, referencing '.ai-compliance-table' and its sub-classes from styles.css
-                # No <style> block here.
-                html_compliance_table = f'''
-                <div>
-                    <table class="ai-compliance-table">
-                        <thead>
-                            <tr><th>分數</th><th>規則名稱</th><th>必要性</th><th>類別</th></tr>
-                        </thead>
-                        <tbody>
-                '''
-                for cls_compliance, rows_compliance in grouped_compliance.items():
-                    rowspan_compliance = len(rows_compliance)
-                    # Background color for category cell still applied inline, can be moved to CSS if preferred
-                    # by adding dynamic classes like class-{cls_compliance_sanitized_name}
-                    category_bg_color = class_color_map_compliance.get(cls_compliance, "#FFFFFF")
+                html_orig_rules_table = '''<style>
+                .original-score-table th, .original-score-table td {
+                    border:1px solid #bbb;
+                    border-bottom:3.5px solid #2c5c88; /* Original thicker bottom border */
+                    padding:8px 12px;
+                    text-align:center;
+                    font-size:16px;
+                }
+                .original-score-table th { background:#2c5c88; color:#fff; }
+                .original-score-table .class-cell { cursor: help; position:relative; } /* Changed from pointer to help */
+                .original-score-table .class-tooltip {
+                    display:none; position:absolute; left:50%; /* Centered relative to parent */
+                    bottom: 100%; /* Position above the parent */
+                    transform: translateX(-50%) translateY(-5px); /* Center and slight offset up */
+                    background:#fff; color:#222; border:1.5px solid #2c5c88; border-radius:10px;
+                    padding:16px 20px; min-width:280px; max-width:500px; /* Adjusted width */
+                    box-shadow:0 5px 15px rgba(0,0,0,0.15); z-index:999999 !important; /* High z-index */
+                    font-size:15px; /* Adjusted font size */
+                    text-align:left; white-space:pre-line; word-break:break-all;
+                    opacity:0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; /* Smooth transition */
+                }
+                .original-score-table .class-cell:hover .class-tooltip { display:block; opacity:1; visibility: visible; }
 
-                    for i_compliance, row_item_compliance in enumerate(rows_compliance):
-                        html_compliance_table += "<tr>"
-                        html_compliance_table += f"<td>{row_item_compliance['分數']}</td>"
+                .original-score-table .rule-link { color: #222; text-decoration: none; cursor: help; position:relative; }
+                .original-score-table td { background:#fff; }
+                .original-score-table .rule-tooltip {
+                    display:none; position:absolute; left:50%; /* Centered relative to parent */
+                    bottom: 100%; /* Position above the parent */
+                    transform: translateX(-50%) translateY(-5px); /* Center and slight offset up */
+                    background:#fff; color:#222; border:1.5px solid #1a5fb4; border-radius:8px;
+                    padding:10px 16px; min-width:250px; max-width:400px; /* Adjusted width */
+                    box-shadow:0 5px 15px rgba(0,0,0,0.15); z-index:999999 !important; /* High z-index */
+                    font-size:14px; /* Adjusted font size */
+                    text-align:left; white-space:pre-line; word-break:break-all;
+                    opacity:0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; /* Smooth transition */
+                }
+                .original-score-table .rule-link:hover .rule-tooltip { display:block; opacity:1; visibility: visible; }
+                /* Ensure table container allows overflow if tooltips are cut by Streamlit's component wrapper */
+                .stHtml iframe { overflow: visible !important; }
+                /* It might be necessary to target the specific div Streamlit wraps around the component,
+                   which can be found using browser developer tools. This is a general attempt. */
+                div[data-testid="stHtml"] > div { overflow: visible !important; }
+                </style>
+                <div><table class="original-score-table" style="border-collapse:collapse;width:100%;min-width:600px;">
+                <thead><tr><th>分數</th><th>規則名稱</th><th>必要性</th><th>類別</th></tr></thead><tbody>
+                ''' # Added thead and tbody for structure
+                for idx_orig, (cls_orig, rows_orig) in enumerate(grouped_orig.items()):
+                    rowspan_orig = len(rows_orig)
+                    color_orig = class_color_map_orig.get(cls_orig, "#FFFFFF")
+                    for i_orig, row_item_orig in enumerate(rows_orig):
+                        html_orig_rules_table += "<tr>"
+                        html_orig_rules_table += f"<td>{row_item_orig['分數']}</td>"
 
-                        rule_key_compliance = row_item_compliance['規則名稱']
-                        rule_desc_compliance = rule_explain_map_compliance.get(rule_key_compliance, '')
-                        beautified_desc_compliance = beautify_rule_desc_html_compliance(rule_desc_compliance)
+                        rule_key_orig = row_item_orig['規則名稱']
+                        rule_desc_orig = rule_explain_map_orig.get(rule_key_orig, '')
+                        beautified_desc_orig = beautify_rule_desc_html_orig(rule_desc_orig)
 
-                        html_compliance_table += f"<td><span class='rule-link'>{row_item_compliance['規則名稱顯示']}<span class='rule-tooltip'>{beautified_desc_compliance}</span></span></td>"
-                        html_compliance_table += f"<td>{row_item_compliance['必要性']}</td>"
+                        html_orig_rules_table += f"<td><span class='rule-link'>{row_item_orig['規則名稱顯示']}<span class='rule-tooltip'>{beautified_desc_orig}</span></span></td>"
+                        html_orig_rules_table += f"<td>{row_item_orig['必要性']}</td>"
 
-                        if i_compliance == 0:
-                            desc_cls_compliance = class_desc_map.get(cls_compliance, "") # Assumes class_desc_map available
-                            # Inline style for background-color retained for dynamic category colors.
-                            # Other styles for .class-cell (cursor, position, font-weight, min-width) are in CSS.
-                            html_compliance_table += f"<td rowspan='{rowspan_compliance}' class='class-cell' style='background-color:{category_bg_color};'>"
-                            html_compliance_table += f"{cls_compliance}"
-                            if desc_cls_compliance:
-                                html_compliance_table += f"<span class='class-tooltip'><b>📂 {cls_compliance}</b><br>{desc_cls_compliance}</span>"
-                            html_compliance_table += "</td>"
-                        html_compliance_table += "</tr>"
-                html_compliance_table += "</tbody></table></div>"
+                        if i_orig == 0:
+                            desc_cls_orig = class_desc_map.get(cls_orig, "")
+                            html_orig_rules_table += f"<td rowspan='{rowspan_orig}' class='class-cell' style='background-color:{color_orig};font-weight:bold;min-width:90px;position:relative;'>{cls_orig}"
+                            if desc_cls_orig:
+                                html_orig_rules_table += f"<span class='class-tooltip'><b>📂 {cls_orig}</b><br>{desc_cls_orig}</span>"
+                            html_orig_rules_table += "</td>"
+                        html_orig_rules_table += "</tr>"
+                html_orig_rules_table += "</tbody></table></div>"
 
-                components.html(html_compliance_table, height=max(450, len(table_data_compliance) * 50 + len(grouped_compliance) * 25), scrolling=True)
-                # --- End: AI Compliance Table ---
+                # Displaying the original-style table
+                components.html(html_orig_rules_table, height=max(450, len(table_data_orig) * 50 + len(grouped_orig) * 25), scrolling=True)
+                # --- End: دقیقاً از原始代码 بازسازی شده برای جدول قوانین ---
             else:
                 st.info("AI分析結果中未包含詳細的規則分數表。")
 
