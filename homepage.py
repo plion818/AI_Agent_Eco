@@ -8,96 +8,20 @@ st.set_page_config(
     initial_sidebar_state="collapsed" # 首頁通常不需要一直顯示側邊欄
 )
 
-# --- Custom CSS for Styling ---
-st.markdown("""
-<style>
-    /* General body styling */
-    .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-    /* Title */
-    .title {
-        text-align: center;
-        font-size: 2.8em;
-        font-weight: bold;
-        color: #003366; /* Dark Blue */
-        margin-bottom: 0.5rem;
-    }
-    /* Subtitle / Description */
-    .description {
-        text-align: center;
-        font-size: 1.3em;
-        color: #333333;
-        margin-bottom: 3rem;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    /* Feature Cards */
-    .feature-card {
-        background-color: #FFFFFF;
-        border: 1px solid #E0E0E0;
-        border-left: 5px solid #FFB300; /* Gold accent */
-        border-radius: 8px;
-        padding: 1.8rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        height: 100%; /* Ensure cards in a row have same height */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    }
-    .feature-card h3 {
-        font-size: 1.6em;
-        font-weight: bold;
-        color: #004080; /* Darker Blue */
-        margin-bottom: 0.8rem;
-    }
-    .feature-card p {
-        font-size: 1.05em;
-        color: #555555;
-        line-height: 1.6;
-        flex-grow: 1;
-    }
-    .feature-card .icon {
-        font-size: 2.5em;
-        margin-right: 0.8rem;
-        color: #FFB300; /* Gold */
-    }
-    /* Button Styling */
-    .stButton>button { /* Targeting Streamlit's default button class */
-        display: block;
-        margin: 3rem auto 1rem auto; /* Center button and add top margin */
-        padding: 0.8rem 2.5rem;
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #FFFFFF;
-        background-color: #005A9C; /* Primary Blue */
-        border: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        transition: background-color 0.2s ease, transform 0.2s ease;
-    }
-    .stButton>button:hover {
-        background-color: #004080; /* Darker Blue on hover */
-        transform: translateY(-2px);
-    }
-    .stButton>button:active {
-        background-color: #003366;
-        transform: translateY(0px);
-    }
-</style>
-""", unsafe_allow_html=True)
+def load_css(file_name):
+    try:
+        with open(file_name, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        st.error(f"CSS file not found: {file_name}")
+        return ""
+
+css_styles = load_css("assets/styles.css")
+if css_styles:
+    st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
 
 # --- Header Section ---
+# Apply the .title class for the main title
 st.markdown("<div class='title'>智慧承保風險評估平台</div>", unsafe_allow_html=True)
 st.markdown(
     "<div class='description'>"
