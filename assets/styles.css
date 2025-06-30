@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6 { /* General header color from analysis_page.py */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 .feature-card h3 { /* h3 within feature-card specifically */
-    font-size: 1.6em;
+    font-size: 1.5em; /* Adjusted from 1.6em to prevent wrapping */
     font-weight: bold;
     color: #004080; /* Darker Blue */
     margin-bottom: 0.8rem;
